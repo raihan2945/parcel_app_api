@@ -1,4 +1,4 @@
-const { ReceivedInternationals } = require("@/src/model");
+const { ReceivedInternationals, sequelize } = require("@/src/model");
 const { badRequest, serverError, notFound } = require("@/src/utils/error");
 
 //*: CREATE NEW
@@ -17,7 +17,10 @@ const createNew = async (body) => {
 
 //*: GET ITEM BY ID
 const findItemById = async (id) => {
-  const user = await ReceivedInternationals.findOne({ where: { id: id }, raw: true });
+  const user = await ReceivedInternationals.findOne({
+    where: { id: id },
+    raw: true,
+  });
 
   if (!user) {
     throw notFound("Item not found");
@@ -34,7 +37,9 @@ const updateItemById = async (id, bodyData) => {
     newData[key] = bodyData[key] ?? newData[key];
   });
 
-  const updatedData = await ReceivedInternationals.findOne({ where: { id: id } })
+  const updatedData = await ReceivedInternationals.findOne({
+    where: { id: id },
+  })
     .then((data) => {
       if (!data) {
         throw notFound("Item not found");
@@ -60,7 +65,9 @@ const updateItemById = async (id, bodyData) => {
 
 //*: UPDATE ITEM BY ID
 const deleteItemById = async (id, bodyData) => {
-  const deletedItem = await ReceivedInternationals.findOne({ where: { id: id } })
+  const deletedItem = await ReceivedInternationals.findOne({
+    where: { id: id },
+  })
     .then(async (item) => {
       if (!item) {
         throw notFound("Item not found");
@@ -85,8 +92,21 @@ const deleteItemById = async (id, bodyData) => {
 };
 
 //*: GET ALL ITEMS
-const findAllItems = async () => {
-  const users = await ReceivedInternationals.findAll({ raw: true });
+const findAllItems = async ({ date, end_date }) => {
+  let whereClause;
+
+  if (date && end_date) {
+    whereClause = sequelize.literal(
+      `DATE(created_at) BETWEEN '${date}' AND '${end_date}'`
+    );
+  } else {
+    whereClause = sequelize.literal(`DATE(created_at) = '${date}'`);
+  }
+
+  const users = await ReceivedInternationals.findAll({
+    where: whereClause,
+    raw: true,
+  });
 
   if (!users) {
     throw notFound("Item not found");

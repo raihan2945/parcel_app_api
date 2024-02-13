@@ -1,4 +1,4 @@
-const { Sents } = require("@/src/model");
+const { Sents, sequelize } = require("@/src/model");
 const { badRequest, serverError, notFound } = require("@/src/utils/error");
 
 //*: CREATE NEW
@@ -85,8 +85,21 @@ const deleteItemById = async (id, bodyData) => {
 };
 
 //*: GET ALL ITEMS
-const findAllItems = async () => {
-  const users = await Sents.findAll({ raw: true });
+const findAllItems = async ({ date, end_date }) => {
+  let whereClause;
+
+  if (date && end_date) {
+    whereClause = sequelize.literal(
+      `DATE(created_at) BETWEEN '${date}' AND '${end_date}'`
+    );
+  } else if (date) {
+    whereClause = sequelize.literal(`DATE(created_at) = '${date}'`);
+  }
+
+  const users = await Sents.findAll({
+    where: whereClause,
+    raw: true,
+  });
 
   if (!users) {
     throw notFound("Item not found");

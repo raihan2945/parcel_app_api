@@ -2,36 +2,39 @@ const sentService = require("@/src/lib/sent");
 const inputSchema = require("@/src/validators/inputValidation");
 
 const getAllItems = async (req, res, next) => {
-  //   const id = req.params.id;
+  const date = req?.query?.date;
+  const end_date = req?.query?.end_date;
 
-  // const validationProperties = [
-  //   { name: "id", type: "number", required: false },
-  // ];
+  const validationProperties = [
+    { name: "date", type: "string", required: true },
+    { name: "end_date", type: "string", required: false },
+  ];
 
-  // //* BUILD INPUT SCHEMA
-  // const buildedSchema = inputSchema(validationProperties);
+  //* BUILD INPUT SCHEMA
+  const buildedSchema = inputSchema(validationProperties);
 
-  // //* : VALIDATE INPUT DATA
-  // const { error } = buildedSchema.validate({}, { abortEarly: false });
+  //* : VALIDATE INPUT DATA
+  const { error } = buildedSchema.validate(
+    { date, end_date },
+    { abortEarly: false }
+  );
 
-  // if (error) {
-  //   return res.status(400).json({
-  //     error: error.details.map((details) => {
-  //       return details.message;
-  //     }),
-  //   });
-  // }
+  if (error) {
+    return res.status(400).json({
+      error: error.details.map((details) => {
+        return details.message;
+      }),
+    });
+  }
 
   try {
     //*: CALL AUTH SERVICE TO SEND OTP TO USERS
-    const items = await sentService.findAllItems();
+    const items = await sentService.findAllItems({ date, end_date });
 
     const response = {
       code: 200,
       message: "Items get Successfully",
-      data: [
-        ...items,
-      ],
+      data: [...items],
     };
 
     res.status(200).json(response);
