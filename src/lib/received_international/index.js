@@ -105,6 +105,7 @@ const findAllItems = async ({ date, end_date }) => {
 
   const users = await ReceivedInternationals.findAll({
     where: whereClause,
+    order: [['created_at', 'DESC']],
     raw: true,
   });
 
