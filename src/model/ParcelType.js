@@ -13,6 +13,16 @@ module.exports = (sequelize) => {
       field: "id",
     },
 
+    group: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "group",
+    },
+
     slug: {
       type: DataTypes.STRING(255),
       allowNull: true,
