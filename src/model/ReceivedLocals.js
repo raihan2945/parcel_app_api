@@ -46,6 +46,7 @@ module.exports = (sequelize) => {
       comment: null,
       field: "office",
     },
+
     created_by: {
       type: DataTypes.STRING(255),
       allowNull: true,
@@ -81,6 +82,15 @@ module.exports = (sequelize) => {
       autoIncrement: false,
       comment: null,
       field: "received_type",
+    },
+    company_name: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "company_name",
     },
     from_name: {
       type: DataTypes.STRING(255),

@@ -47,6 +47,15 @@ module.exports = (sequelize) => {
       comment: null,
       field: "office",
     },
+    company_name: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "company_name",
+    },
 
     created_by: {
       type: DataTypes.STRING(255),
@@ -75,15 +84,7 @@ module.exports = (sequelize) => {
       comment: null,
       field: "last_updated_by",
     },
-    company_name: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-      defaultValue: null,
-      primaryKey: false,
-      autoIncrement: false,
-      comment: null,
-      field: "company_name",
-    },
+
     tracking_id: {
       type: DataTypes.STRING(255),
       allowNull: true,
