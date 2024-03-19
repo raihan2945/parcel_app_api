@@ -4,8 +4,10 @@ const inputSchema = require("@/src/validators/inputValidation");
 const userLogin = async (req, res, next) => {
   const bodyData = req.body;
 
+  //!: ID IS USED INSTED OF MOBILE
+
   const validationProperties = [
-    { name: "mobile", type: "number", required: true },
+    { name: "id", type: "number", required: true },
     { name: "password", type: "password", required: true },
   ];
 
