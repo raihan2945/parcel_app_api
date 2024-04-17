@@ -47,6 +47,15 @@ module.exports = (sequelize) => {
       comment: null,
       field: "office",
     },
+    country: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "country",
+    },
     company_name: {
       type: DataTypes.STRING(255),
       allowNull: true,
